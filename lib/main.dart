@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_sharedpreferences/landing.dart';
+import 'package:test_sharedpreferences/menu.dart';
 
 Color? purple = Colors.purple[900];
 
@@ -55,15 +57,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
+    double screenWidth = size.width;
+    double screenHeight = size.height;
+
+    int height = screenHeight.toInt();
+    int width = screenWidth.toInt();
 
     return Scaffold(
       backgroundColor: Colors.purple[50],
-
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Test', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.indigo[900],
-      ),
 
       body: SingleChildScrollView(
         child: Column(
@@ -73,12 +74,37 @@ class _HomeState extends State<Home> {
               height: size.height,
               width: size.width,
               color: Colors.purple[50],
+              child: Landing(width: width, height: height)
             ),
-            Container(
-              key: itemKey,
-              height: size.height,
-              width: size.width,
-              color: Colors.indigo[900],
+            LayoutBuilder(
+              builder: (context, constraints) { 
+                if (constraints.maxWidth < 1000) {
+                  return Container(
+                    key: itemKey,
+                    height: size.height,
+                    width: size.width,
+                    color: Colors.indigo[900],
+                    child: const MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: Menu(),
+                    ),
+                  );
+                }
+                else {
+                  return Container(
+                    key: itemKey,
+                    height: size.height,
+                    width: size.width,
+                    padding: const EdgeInsets.symmetric(horizontal: 200),
+                    color: Colors.indigo[900],
+                    child: const MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: Menu(),
+                    ),
+                  );
+                }
+              },
+              
             ),
             Container(
               height: size.height,
